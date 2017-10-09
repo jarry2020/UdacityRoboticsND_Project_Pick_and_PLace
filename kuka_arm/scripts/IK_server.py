@@ -120,16 +120,19 @@ def handle_calculate_IK(req):
 			theta1 = atan2(WC[1],WC[0])
 
 			# SSS triangle for theta2 and theta3
-			side_a = 1.501 # sqrt(0.054^2+(0.96+0.54)^2)
-			side_b = sqrt(pow((sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - 0.35), 2) + pow((WC[2] - 0.75), 2)) # side_b = d3; d1 = 0.75
-			side_c = 1.25 # Distanc between joint 2 and 3
+			l25 = sqrt(pow((sqrt(pow(WC[0],2) + pow(WC[1],2)) - a1.subs(DH)), 2) + pow((WC[2] - d1.subs(DH)), 2))
+			l35 = sqrt(pow(a3.subs(DH),2)+pow(d4.subs(DH),2))
 
-			angle_a = acos((side_b*side_b + side_c*side_c - side_a*side_a)/(2*side_b*side_c))
-			angle_b = acos((side_a*side_a + side_c*side_c - side_b*side_b)/(2*side_a*side_c))
-			angle_c = acos((side_a*side_a + side_b*side_b - side_c*side_c)/(2*side_a*side_b))
-			
-			theta2 = pi/2 - angle_a - atan2(WC[2] - 0.75, sqrt(WC[0]*WC[0] + WC[1] * WC[1]) -0.35)
-			theta3 = pi/2 - (angle_b + 0.036) # 0.036 accounts for sag in link4 of -0.054m.  asin((0.96+0.54)/0.054)
+			angle_a = acos((pow(l25,2) + pow(a2.subs(DH),2) - pow(l35,2))/(2*l25*a2.subs(DH)))
+			angle_b = acos((pow(l35,2) + pow(a2.subs(DH),2) - pow(l25,2))/(2*l35*a2.subs(DH)))
+			angle_c = acos((pow(l35,2) + pow(l25,2) - pow(a2.subs(DH),2))/(2*l35*l25))
+			angle_d = atan2(WC[1]- d1.subs(DH),WC[0]-a1.subs(DH))
+			theta2 = pi/2 - angle_a - angle_d
+
+			angle_e = pi/2 - theta2
+			angle_f = atan2(a3.subs(DH),d4.subs(DH))
+
+			theta3 = angle_e - angle_f - pi/2
 
 			R0_3 = T0_1[0:3,0:3]*T1_2[0:3,0:3]*T2_3[0:3,0:3]
 			R0_3 = R0_3.evalf(subs={q1:theta1, q2:theta2, q3:theta3})
