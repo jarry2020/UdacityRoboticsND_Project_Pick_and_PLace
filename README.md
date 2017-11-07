@@ -6,7 +6,6 @@
 
 **Steps to complete the project:**  
 
-
 1. Set up your ROS Workspace.
 2. Download or clone the [project repository](https://github.com/udacity/RoboND-Kinematics-Project) into the ***src*** directory of your ROS Workspace.  
 3. Experiment with the forward_kinematics environment and get familiar with the robot.
