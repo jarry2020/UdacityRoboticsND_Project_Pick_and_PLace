@@ -3,7 +3,6 @@
 
 ---
 
-
 **Steps to complete the project:**  
 
 1. Set up your ROS Workspace.
